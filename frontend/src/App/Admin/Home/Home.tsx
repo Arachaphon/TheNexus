@@ -176,7 +176,7 @@ const Home = () => {
                             {/* ฝั่งขวา: เนื้อหา */}
                             <div className="flex flex-col gap-6">
                                 <div>
-                                    <h4 className="text-[#003628] font-bold text-lg mb-2">The Nexus Apartment Management System</h4>
+                                    <h4 className="text-[#003628] font-bold text-lg mb-2">The Nexus Dormitory Management System</h4>
                                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                                         ระบบ The Nexus เหมาะกับใคร
                                     </h2>
