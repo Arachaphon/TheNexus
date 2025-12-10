@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// 1. รับ props ชื่อ onMenuClick เข้ามา
-const Navbar = ({ onMenuClick }: { onMenuClick: (page: string) => void }) => {
+// กำหนด Type ของ Props
+type NavbarProps = {
+  onMenuClick: (page: string) => void;
+};
+
+const Navbar = ({ onMenuClick }: NavbarProps) => {
+  // 1. เรียกใช้ Hook
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('หน้าแรก');
 
+  // 2. ฟังก์ชันเปลี่ยนหน้าไป Login
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  // 3. ฟังก์ชันเปลี่ยนเมนู (Scroll/Tab)
   const handleClick = (pageName: string) => {
-    setActiveTab(pageName); // เปลี่ยนสีปุ่มใน Navbar
-    onMenuClick(pageName);  // **ส่งสัญญาณบอกหน้าหลักให้เปลี่ยนเนื้อหา**
+    setActiveTab(pageName); 
+    onMenuClick(pageName);  
   };
 
   const getBtnClass = (name: string) => {
@@ -23,32 +36,16 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (page: string) => void }) => {
             <img src="/logo.png" alt="Logo" className="w-24 h-24 object-contain" />
           </div>
 
-          {/* แก้ onClick ให้เรียก handleClick แทน */}
-          <button onClick={() => handleClick('หน้าแรก')} className={getBtnClass('หน้าแรก')}>
-            หน้าแรก
-          </button>
+          {['หน้าแรก', 'ฟีเจอร์', 'บริการ', 'คู่มือการใช้งาน', 'บทความ', 'ติดต่อเรา'].map((menu) => (
+            <button key={menu} onClick={() => handleClick(menu)} className={getBtnClass(menu)}>
+              {menu}
+            </button>
+          ))}
 
-          <button onClick={() => handleClick('ฟีเจอร์')} className={getBtnClass('ฟีเจอร์')}>
-            ฟีเจอร์
-          </button>
-
-          <button onClick={() => handleClick('บริการ')} className={getBtnClass('บริการ')}>
-            บริการ
-          </button>
-
-          <button onClick={() => handleClick('คู่มือการใช้งาน')} className={getBtnClass('คู่มือการใช้งาน')}>
-            คู่มือการใช้งาน
-          </button>
-
-          <button onClick={() => handleClick('บทความ')} className={getBtnClass('บทความ')}>
-            บทความ
-          </button>
-
-          <button onClick={() => handleClick('ติดต่อเรา')} className={getBtnClass('ติดต่อเรา')}>
-            ติดต่อเรา
-          </button>
-
-          <button className="bg-emerald-900 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-medium transition shadow-md">
+          <button 
+            onClick={handleLoginClick}
+            className="bg-emerald-900 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-medium transition shadow-md"
+          >
             เข้าสู่ระบบ
           </button>
         </nav>
