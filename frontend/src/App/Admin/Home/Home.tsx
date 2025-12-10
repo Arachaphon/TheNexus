@@ -8,24 +8,17 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-white font-sans">
       
-      {/* Navbar Fixed */}
+
       <div className="fixed top-0 left-0 w-full z-50"> 
         <Navbar onMenuClick={(page) => setCurrentPage(page)} />
       </div>
       
-      {/* ✅ แก้ไขที่ 1: ปรับ <main> 
-         - เอา items-start / justify-center ออก เพื่อให้เราจัดการ layout เองในแต่ละ section
-         - เอา px-4 md:px-8 ออก เพื่อให้ทำ Full Width ได้
-      */}
+
       <main className="flex-grow w-full mt-40 md:mt-48 pb-10"> 
           
           {currentPage === 'หน้าแรก' && (
             <div className="flex flex-col gap-16"> 
-                
-                {/* ✅ ส่วนที่ 1: Banner 
-                   - ต้องเพิ่ม Container (div ชั้นนอก) มาหุ้มเพื่อจัดกึ่งกลาง (mx-auto) และใส่ padding (px-4) 
-                   - เพราะเราเอา padding ออกจาก main แล้ว
-                */}
+
                 <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 pt-10">
                     <div className="relative w-full h-[600px] md:h-[800px] rounded-[3rem] overflow-hidden border-8 border-[#003628] shadow-2xl animate-fade-in">
                         <img 
@@ -95,11 +88,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* ✅ ส่วนที่ 2: 4 ขั้นตอน (Full Width) 
-                    - div ชั้นนอก (section) ใส่ w-full และ bg สีเขียว เพื่อให้ยืดเต็มจอ
-                    - div ชั้นใน ใส่ max-w-[1600px] เพื่อคุมเนื้อหาให้อยู่ตรงกลาง
-                    - เอา rounded ออกเพื่อให้เป็นแถบยาวชนขอบ
-                */}
+
                 <section className="w-full bg-[#003628] py-20 text-white">
                     <div className="max-w-[1600px] mx-auto px-8 md:px-16">
                         <div className="text-center mb-16">
@@ -108,7 +97,7 @@ const Home = () => {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center relative">
-                            {/* Step 1 */}
+                            
                             <div className="flex flex-col items-center gap-4 z-10">
                                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-[#003628] text-2xl font-bold shadow-lg mb-2">
                                     1
@@ -120,7 +109,7 @@ const Home = () => {
                                 </p>
                             </div>
 
-                            {/* Step 2 */}
+                            
                             <div className="flex flex-col items-center gap-4 z-10">
                                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-[#003628] text-2xl font-bold shadow-lg mb-2">
                                     2
@@ -132,7 +121,7 @@ const Home = () => {
                                 </p>
                             </div>
 
-                            {/* Step 3 */}
+                            
                             <div className="flex flex-col items-center gap-4 z-10">
                                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-[#003628] text-2xl font-bold shadow-lg mb-2">
                                     3
@@ -144,7 +133,7 @@ const Home = () => {
                                 </p>
                             </div>
 
-                            {/* Step 4 */}
+                            
                             <div className="flex flex-col items-center gap-4 z-10">
                                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-[#003628] text-2xl font-bold shadow-lg mb-2">
                                     4
@@ -158,14 +147,14 @@ const Home = () => {
                         </div>
                     </div>
                 </section>
-                {/* ✅ ส่วนที่ 3: ระบบ The Nexus เหมาะกับใคร (เพิ่มใหม่ตามรูป) */}
+                
                 <section className="w-full bg-white py-24">
                      <div className="max-w-[1600px] mx-auto px-4 md:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                             
-                            {/* ฝั่งซ้าย: รูปตึก */}
+                            
                             <div className="w-full h-[400px] lg:h-[500px] rounded-[3rem] overflow-hidden shadow-2xl">
-                                {/* ⚠️ อย่าลืมเปลี่ยนชื่อไฟล์รูปภาพตรงนี้ให้เป็นรูปตึกของคุณ เช่น /building.jpg */}
+                                
                                 <img 
                                     src="home1.png" 
                                     alt="Building Exterior" 
@@ -173,7 +162,7 @@ const Home = () => {
                                 />
                             </div>
 
-                            {/* ฝั่งขวา: เนื้อหา */}
+                            
                             <div className="flex flex-col gap-6">
                                 <div>
                                     <h4 className="text-[#003628] font-bold text-lg mb-2">The Nexus Dormitory Management System</h4>
