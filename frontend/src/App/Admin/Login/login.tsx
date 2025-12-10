@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { supabase } from '../../../supabaseClient';
+
 
 const LoginPage = () => {
-  // 1. State เก็บข้อมูล
+  // 1. State เก็บข้อมูลD
   const [formData, setFormData] = useState({
     username: '',
     password: ''
