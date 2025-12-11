@@ -7,8 +7,7 @@ const HomeMain = () => {
 
   return (
 
-      <main className="flex-1 bg-[#f4fce8] relative">
-        {/* เรียกใช้ Component เนื้อหาหลักที่ import มา */}
+      <main className="flex-1 relative">
         <C_HomeMain />
       </main>
 
