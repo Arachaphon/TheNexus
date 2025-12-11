@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { supabase } from '../../../supabaseClient';
-
+import { Navigate , useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   // 1. State เก็บข้อมูลD
   const [formData, setFormData] = useState({
     username: '',
@@ -10,8 +11,8 @@ const LoginPage = () => {
   });
   
   // State เก็บ Error (กำหนด Type ให้มันรู้ว่าอาจมี key เป็น string)
-  const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
-
+  const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
+  const [loading ,setLoading] = useState(false);
   // ฟังก์ชันอัปเดตค่าเมื่อพิมพ์
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,28 +25,32 @@ const LoginPage = () => {
   };
 
   // 2. ฟังก์ชันตรวจสอบการ Login (จำลองการทำงาน)
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const { username, password } = formData;
     
-    // --- จุดที่แก้: กำหนด Type ให้ newErrors รับค่าอะไรก็ได้ เพื่อแก้ตัวแดง ---
-    const newErrors: { username?: string; password?: string } = {};
+    setErrors({});
 
-    // ส่วนจำลองการตรวจสอบ (Mock Logic)
-    if (username !== 'admin') {
-      newErrors.username = 'ชื่อผู้ใช้/อีเมลไม่ถูกต้องหรือยังไม่มีบัญชีผู้ใช้';
-    } 
-    
-    if (password !== '1234') {
-      newErrors.password = 'รหัสผ่านไม่ถูกต้อง';
-    } 
-    
-    // เช็คว่าถ้าไม่มี Error เลย (Object ว่างเปล่า)
-    if (Object.keys(newErrors).length === 0) {
-      console.log('Login Success!');
-      alert('เข้าสู่ระบบสำเร็จ (Simulation)');
+    try {
+      setLoading(true);
+      const { data ,error } = await supabase.auth.signInWithPassword({
+        email: username,
+        password: password, 
+      });
+      if (error) {
+        console.error('Login Error:',error.message);
+        setErrors({ general: 'ชื่อผู้ใช้/อีเมลไม่ถูกต้อง หรือ รหัสผ่านไม่ถูกต้อง'})
+      } else {
+        console.log('Login Success!',data);
+        alert('เข้าสู่ระบบสำเร็จ');
+        navigate('/')
+      }
+    } catch (error) {
+      console.error('Unexpected Error:',error);
+      setErrors({ general: 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่'});
+    } finally {
+      setLoading(false)
     }
-
-    setErrors(newErrors);
+    
   };
 
   return (
