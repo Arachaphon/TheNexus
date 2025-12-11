@@ -117,7 +117,7 @@ const LoginPage = () => {
                     <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500" />
                     <span className="text-gray-700">บันทึกรหัสผ่าน</span>
                     </label>
-                    <a href="#" className="text-gray-700 underline hover:text-gray-900">
+                    <a href="/Forgotpassword" className="text-gray-700 underline hover:text-gray-900">
                     ลืมรหัสผ่าน
                     </a>
                 </div>
