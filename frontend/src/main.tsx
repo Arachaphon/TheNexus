@@ -10,7 +10,6 @@ import Login from './App/Admin/Login/login.tsx';
 import RegisterPage from './App/Admin/Login/register.tsx';
 import ForgotPasswordPage from './App/Admin/Login/forgotpassword.tsx';
 import CreatePasswordPage from './App/Admin/Login/createpassword.tsx';
-import HomeMain from './App/Admin/Home_Main/homemain.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,7 +20,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/createpassword" element={<CreatePasswordPage />} />
-        <Route path="/homemain" element={<HomeMain />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
