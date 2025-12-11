@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../../../supabaseClient';
-import { Navigate , useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const LoginPage = () => {
   
   // State เก็บ Error (กำหนด Type ให้มันรู้ว่าอาจมี key เป็น string)
   const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
-  const [loading ,setLoading] = useState(false);
+  const [loading,setLoading] = useState(false);
   // ฟังก์ชันอัปเดตค่าเมื่อพิมพ์
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
