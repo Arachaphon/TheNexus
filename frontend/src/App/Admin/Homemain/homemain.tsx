@@ -6,27 +6,17 @@ const HomeMain = () => {
   const [activeTab, setActiveTab] = useState<'dormitory' | 'users'>('dormitory');
 
   return (
-    // ✅ 1. ใช้ div ครอบทั้งหมด กำหนด min-h-screen เพื่อให้ความสูงอย่างน้อยเท่ากับหน้าจอ
-    // และใช้ flex-col เพื่อเรียง Header -> Content -> Footer
+
     <div className="flex flex-col min-h-screen">
-      
-      {/* ส่วน Header (ความสูงตาม content) */}
       <C_HomeMain />
 
-      {/* ✅ 2. ส่วน Content ตรงกลาง */}
-      {/* ใช้ flex-grow (หรือ flex-1) เพื่อให้ส่วนนี้ขยายกินพื้นที่ว่างทั้งหมดระหว่าง Header และ Footer */}
-      {/* ลบ h-5/6 ออก เพราะมันจะทำให้สูงเกินหรือขาดได้ */}
-      <div className="flex-grow w-full p-6 relative bg-lime-50 flex flex-col">
-        
-        {/* --- Top Control Bar --- */}
+      <div className="flex-grow w-full p-6 relative bg-[#f8fcf8] flex flex-col">
+
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 relative">
-          
-          {/* Spacer ด้านซ้าย */}
+
           <div className="hidden md:block w-[120px]"></div>
 
-          {/* --- Center Tabs --- */}
             <div className="flex space-x-8 gap-4">
-                {/* Tab 1: จัดการหอพัก */}
                 <button
                 onClick={() => setActiveTab('dormitory')}
                 className={`flex items-center gap-4 pb-2 text-lg font-medium transition-colors border-b-2 ${
@@ -41,7 +31,6 @@ const HomeMain = () => {
                 จัดการหอพัก
                 </button>
 
-                {/* Tab 2: จัดการผู้ใช้งาน */}
                 <button
                 onClick={() => setActiveTab('users')}
                 className={`flex items-center gap-4 pb-2 text-lg font-medium transition-colors border-b-2 ${
@@ -57,7 +46,6 @@ const HomeMain = () => {
                 </button>
             </div>
 
-          {/* --- Right Action Button --- */}
           <div className="mt-4 md:mt-0 w-[120px] flex justify-end">
             <a href="/homemain/adddormitory">
                 <button className="bg-[#7d7671] hover:bg-[#68625d] text-white px-6 py-4 rounded-md shadow-sm text-sm font-medium transition-colors">
@@ -68,9 +56,8 @@ const HomeMain = () => {
 
         </div>
 
-        {/* --- Content Area --- */}
         <div className="mt-6 flex-grow"> 
-           {/* เพิ่ม flex-grow ตรงนี้ด้วยถ้าอยากให้ content ดันลงไปอีก แต่เบื้องต้นไม่จำเป็นเท่า parent div */}
+
           {activeTab === 'dormitory' ? (
             <div className="text-center text-gray-400 mt-20">
               {/* <p>Dormitory List Content goes here</p> */}
@@ -84,7 +71,6 @@ const HomeMain = () => {
 
       </div>
 
-      {/* ส่วน Footer (ติดล่างสุดอัตโนมัติ เพราะ div ตรงกลางดันลงมา) */}
       <div className="w-full">
         <Footer />
       </div>
