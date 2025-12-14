@@ -21,7 +21,7 @@ const RequiredLabel: React.FC<RequiredLabelProps> = ({ text, detail }) => {
 const inputStyle = "w-full px-4 py-3 rounded-lg border-none focus:ring-2 focus:ring-lime-50 outline-none bg-white shadow-sm";
 
 interface FormErrors {
-    fullName?: string;
+    username?: string;
     email?: string;
     phoneNumber?: string;
     password?: string;
@@ -32,7 +32,7 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    fullName: '',
+    username: '',
     email: '',
     phoneNumber: '',
     password: '',
@@ -54,10 +54,10 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: FormErrors = {};
-    const { fullName, email, phoneNumber, password, confirmPassword } = formData;
+    const { username, email, phoneNumber, password, confirmPassword } = formData;
 
     // --- Validation ---
-    if (!fullName.trim()) newErrors.fullName = "จำเป็นต้องกรอกข้อมูลเหล่านี้";
+    if (!username.trim()) newErrors.username = "จำเป็นต้องกรอกข้อมูลเหล่านี้";
     if (!email.trim()) newErrors.email = "จำเป็นต้องกรอกข้อมูลเหล่านี้";
     if (!phoneNumber.trim()) newErrors.phoneNumber = "จำเป็นต้องกรอกข้อมูลเหล่านี้";
 
@@ -83,7 +83,6 @@ const RegisterPage: React.FC = () => {
       setLoading(true);
       try {
         // 1. สร้าง User ในระบบ Auth (เก็บ Email/Password)
-        // สังเกตว่าเราไม่ต้องส่ง data: { fullName } ตรงนี้แล้ว
         const { data: authData, error: authError } = await supabase.auth.signUp({
           email: email,
           password: password,
@@ -98,7 +97,7 @@ const RegisterPage: React.FC = () => {
                 .insert([
                     { 
                         id: authData.user.id,     // เชื่อม ID กับ Auth
-                        full_name: fullName,      // ชื่อที่กรอก
+                        username: username,      // ชื่อที่กรอก
                         phone_number: phoneNumber, // เบอร์ที่กรอก
                         email: email,             // อีเมล
                         role: 'user'              // กำหนด role เริ่มต้น (ถ้ามีคอลัมน์นี้)
@@ -114,7 +113,7 @@ const RegisterPage: React.FC = () => {
 
         // 3. สำเร็จทุกขั้นตอน
         console.log("Registered Successfully");
-        alert("สมัครสมาชิกสำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยันตัวตน");
+        alert("สมัครสมาชิกสำเร็จ!");
         navigate('/login');
 
       } catch (err) {
@@ -137,8 +136,8 @@ const RegisterPage: React.FC = () => {
           
           <div>
             <RequiredLabel text="ชื่อและนามสกุล" />
-            <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={`${inputStyle} ${errors.fullName ? 'ring-2 ring-red-500' : ''}`} />
-            {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>}
+            <input type="text" name="username" value={formData.username} onChange={handleChange} className={`${inputStyle} ${errors.username ? 'ring-2 ring-red-500' : ''}`} />
+            {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
           </div>
 
           <div>
