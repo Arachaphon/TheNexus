@@ -29,16 +29,32 @@ const LoginPage = () => {
     const { username, password } = formData;
     
     setErrors({});
-
+    setLoading(true);
     try {
-      setLoading(true);
-      const { data ,error } = await supabase.auth.signInWithPassword({
-        email: username,
-        password: password, 
+      let loginEmail = username;
+
+      const isEmail = username.includes('@');
+      if(!isEmail){
+        const { data:userProfile ,error:profileError } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('username',username)
+          .single();
+        if (profileError|| !userProfile){
+          throw new Error('ไม่พบชื่อผู้ใช้นี้ หรือ ชื่อผู้ใช้ผิด')
+        }
+        loginEmail = userProfile.email;
+      }
+
+      const { data,error} = await supabase.auth.signInWithPassword({
+        email: loginEmail,
+        password: password,
       });
       if (error) {
         console.error('Login Error:',error.message);
-        setErrors({ general: 'ชื่อผู้ใช้/อีเมลไม่ถูกต้อง หรือ รหัสผ่านไม่ถูกต้อง'})
+        if (error.message.includes("Invalid login credentials")) {
+          setErrors({ general:'รหัสผ่านไม่ถูกต้อง'})
+        }
       } else {
         console.log('Login Success!',data);
         alert('เข้าสู่ระบบสำเร็จ');
