@@ -13,6 +13,9 @@ const LoginPage = () => {
   // State เก็บ Error (กำหนด Type ให้มันรู้ว่าอาจมี key เป็น string)
   const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
   const [loading,setLoading] = useState(false);
+
+  const [rememberMe, setRememberMe] = useState(false);
+
   // ฟังก์ชันอัปเดตค่าเมื่อพิมพ์
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,6 +26,20 @@ const LoginPage = () => {
       setErrors({ ...errors, [name]: '' });
     }
   };
+
+  React.useEffect(() => {
+    const savedUsername = localStorage.getItem('rememberUsername');
+    const savedPassword = localStorage.getItem('rememberPassword');
+
+    if (savedUsername && savedPassword) {
+      setFormData((prev) => ({
+      ...prev, 
+      username: savedUsername,
+      password: savedPassword || ''
+    }));
+      setRememberMe(true);
+    }
+  },[]);
 
   // 2. ฟังก์ชันตรวจสอบการ Login (จำลองการทำงาน)
   const handleLogin = async () => {
@@ -60,6 +77,7 @@ const LoginPage = () => {
         email: loginEmail,
         password: password,
       });
+
       if (error) {
         console.error('Login Error:',error.message);
         if (error.message.includes("Invalid login credentials")) {
@@ -68,6 +86,13 @@ const LoginPage = () => {
           setErrors({ general: error.message});
         }
       } else {
+        if (rememberMe) {
+          localStorage.setItem('rememberUsername', formData.username);
+          localStorage.setItem('rememberPassword', formData.password);
+        } else {
+          localStorage.removeItem('rememberUsername');
+          localStorage.removeItem('rememberPassword');
+        }
         console.log('Login Success!',data);
         alert('เข้าสู่ระบบสำเร็จ');
         navigate('/')
@@ -148,7 +173,11 @@ const LoginPage = () => {
               </div>
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500" />
+                <input 
+                  type="checkbox"
+                  checked = {rememberMe}
+                  onChange ={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500" />
                   <span className="text-gray-700">บันทึกรหัสผ่าน</span>
                 </label>
                 <a href="/Forgotpassword" className="text-gray-700 underline hover:text-gray-900">
@@ -157,14 +186,14 @@ const LoginPage = () => {
               </div>
 
               <div className="flex justify-end pt-2">
-                <button 
+                <button
                   type="button" 
                   onClick={handleLogin}
                   disabled={loading}
                   className="bg-sky-600 hover:bg-cyan-500 text-white font-medium py-3 px-10 rounded-lg shadow-md transition duration-200 text-lg"
                 >
                   {loading ? 'กำลังตรวจสอบ...' :  'เข้าสู่ระบบ' }
-                  </button>
+                </button>
               </div>
 
               <div className="border-t border-gray-900 my-4"></div>
