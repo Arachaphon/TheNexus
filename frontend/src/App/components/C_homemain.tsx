@@ -1,22 +1,28 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
 
 // Component หลัก
 export default function DormitoryLayout() {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // ในการใช้งานจริงควรเริ่มที่ false
   const [username, setUsername ] = useState('Loading...');
 
   useEffect(() => {
     const getUserData = async () => {
       const { data: {user} } = await supabase.auth.getUser();
+      if (!user) {
+        navigate('/login');
+        return;
+      }
       if (user) {
-        const { data : profile,error } = await supabase
+        const { data : profile} = await supabase
         .from('profiles')
         .select('username')
         .eq('id',user.id)
         .single();
-        if(profile && profile.username){
+        if(profile?.username){
           setUsername(profile.username);
         } else {
           const metadataName = user.user_metadata?.username;
@@ -28,7 +34,22 @@ export default function DormitoryLayout() {
     };
 
     getUserData();
-  }, []);
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("คุณต้องการออกจากระบบใช่หรือไม่?");
+    if (confirmLogout) {
+      try {
+        const { error } = await supabase.auth.signOut();
+        if ( error ) throw error;
+        navigate('/');
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'เกิดข้อผิดพลาด' ;
+        console.error('Error logging out:', message);
+        alert('เกิดข้อผิดพลาดในการออกจากระบบ');
+      }
+    }
+  };
   return (
     <div className="flex flex-col font-sans text-gray-800 ">
       
@@ -75,7 +96,9 @@ export default function DormitoryLayout() {
                   โปรไฟล์
                 </button>
               </a>
-              <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 text-left">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
