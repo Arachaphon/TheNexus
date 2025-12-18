@@ -13,9 +13,8 @@ import ForgotPasswordPage from './App/Admin/Login/forgotpassword.tsx';
 import CreatePasswordPage from './App/Admin/Login/createpassword.tsx';
 import HomeMain from './App/Admin/Homemain/homemain.tsx';
 import Adddormitory from './App/Admin/Homemain/adddormitory.tsx';
-
-// --- แก้ไขจุดที่ 1: เปลี่ยนนามสกุลเป็น .jsx ให้ตรงกับไฟล์จริง ---
-import UtilityCalculation from './App/Admin/Homemain/utilitycalculation.jsx'; 
+import UtilityCalculation from './App/Admin/Homemain/utilitycalculation.tsx'; 
+import ProfileSettings from './App/Admin/Homemain/profilesettings.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -29,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/homemain" element={<HomeMain />} />
         <Route path="/homemain/adddormitory" element={<Adddormitory />} />
         <Route path="/homemain/utilitycalculation" element={<UtilityCalculation />} />
+        <Route path="/homemain/profilesettings" element={<ProfileSettings />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
