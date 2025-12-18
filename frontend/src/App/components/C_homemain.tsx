@@ -1,9 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { supabase } from '../../supabaseClient';
+
 
 // Component หลัก
 export default function DormitoryLayout() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // ในการใช้งานจริงควรเริ่มที่ false
+  const [username, setUsername ] = useState('Loading...');
 
+  useEffect(() => {
+    const getUserData = async () => {
+      const { data: {user} } = await supabase.auth.getUser();
+      if (user) {
+        const { data : profile,error } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id',user.id)
+        .single();
+        if(profile && profile.username){
+          setUsername(profile.username);
+        } else {
+          const metadataName = user.user_metadata?.username;
+          setUsername(metadataName || 'User' );
+        } 
+      } else {
+        setUsername('Guest');
+      }
+    };
+
+    getUserData();
+  }, []);
   return (
     <div className="flex flex-col font-sans text-gray-800 ">
       
@@ -31,7 +56,7 @@ export default function DormitoryLayout() {
             </svg>
             
             {/* Username placeholder */}
-            <span className="font-medium text-lg uppercase border-b-2 border-[#0e4b3a]">XXXXXXXX</span>
+            <span className="font-medium text-lg uppercase border-b-2 border-[#0e4b3a]">{username}</span>
             
             {/* Chevron Down Icon */}
             <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
