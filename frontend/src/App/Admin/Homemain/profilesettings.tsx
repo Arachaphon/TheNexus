@@ -47,6 +47,44 @@ const ProfileSettings: React.FC = () => {
     }
   }
 
+  const saveProfile = async () => {
+    try {
+      const {data: {user}, error: authError } = await supabase.auth.getUser();
+      if (authError) throw authError;
+
+      const { error: dbError } = await supabase
+        .from('profiles')
+        .update({ 
+            username: profile.name,
+            email: profile.email
+          })
+        .eq('id', user?.id);
+      if (dbError) throw dbError;
+
+      const { data:updateData , error: updateError } = await supabase.auth.updateUser({
+        email: profile.email
+      });
+
+      if (updateError) {
+        throw new Error(`Auth Error: ${updateError.message}`);
+      };
+
+      if (updateData?.user){
+        setProfile((prev) => ({
+          ...prev,
+          email: updateData.user?.email ?? prev.email
+        }));
+      }
+
+      alert('บันทึกข้อมูลสำเร็จ')
+
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'ไม่สามารถบันทึกได้';
+      alert('เกิดข้อผิดพลาดในการบันทึก' + errorMessage);
+      console.error(error);
+    }
+  }
+
   // State สำหรับรหัสผ่าน
   const [password, setPassword] = useState({
     current: '',
@@ -62,9 +100,6 @@ const ProfileSettings: React.FC = () => {
     setPassword({ ...password, [e.target.name]: e.target.value });
   };
 
-  const saveProfile = () => {
-    console.log('Saving profile:', profile);
-  };
 
   const savePassword = () => {
     console.log('Updating password:', password);
