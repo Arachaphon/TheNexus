@@ -1,13 +1,51 @@
-import React, { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { supabase } from '../../../supabaseClient';
 import C_HomeMain from '../../components/C_homemain'; 
 import Footer from '../../components/Footerhomemain'; 
 
 const ProfileSettings: React.FC = () => {
+
   // State สำหรับข้อมูลส่วนตัว
   const [profile, setProfile] = useState({
-    name: 'XXXXXXXX',
-    email: 'XXXXXXXX@XXXXXXXX.XXXXXXXX'
+    name: '',
+    email: ''
   });
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [])
+
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const {data: {user}, error: authError } = await supabase.auth.getUser();
+
+      if (authError) throw authError;
+
+      if (user) {
+        const {data: dbData, error: dbError } = await supabase
+          .from('profiles')
+          .select('username')
+          .eq('id', user.id)
+          .single()
+
+          if (dbError) throw dbError;
+
+          if(dbData){
+            setProfile({
+              name: dbData?.username || '',
+              email: user.email || ''
+          });
+        }  
+      }
+    } catch (error) {
+      console.error('Error:',error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   // State สำหรับรหัสผ่าน
   const [password, setPassword] = useState({
@@ -31,6 +69,14 @@ const ProfileSettings: React.FC = () => {
   const savePassword = () => {
     console.log('Updating password:', password);
   };
+
+  if (loading) {
+    return (
+      <div className='flex min-h-screen items-center justify-center bg-[#f8fcf8]'>
+        <p className='text-lg text-gray-600'>กำลังโหลดข้อมูล...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f8fcf8]"> 
