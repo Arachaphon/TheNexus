@@ -95,7 +95,7 @@ const LoginPage = () => {
         }
         console.log('Login Success!',data);
         alert('เข้าสู่ระบบสำเร็จ');
-        navigate('/')
+        navigate('/homemain')
       }
     } catch (err: unknown) {
       console.error('Unexpected Error',err);
