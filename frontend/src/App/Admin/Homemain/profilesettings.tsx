@@ -92,17 +92,70 @@ const ProfileSettings: React.FC = () => {
     confirm: ''
   });
 
+  const savePassword = async () => {
+    if (!password.current || !password.new || !password.confirm){
+      alert("กรุณากรอกข้อมูลให้ครบทุกช้อง");
+      return;
+    }
+    try {
+
+      setLoading(true);
+
+      const { data: {user}, error: userError } = await supabase.auth.getUser();
+      if (userError || !user?.email) throw new Error("ไม่พบอีเมลผู้ใช้");
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: password.current,
+      });
+
+      if (signInError) {
+        alert("รหัสผ่านปัจจุบันไม่ถูกต้อง");
+        setLoading(false);
+        return;
+      }
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#._-])[A-Za-z\d@$!%*?&#._-]{8,}$/;
+      if (!passwordRegex.test(password.new)) {
+        alert (`รหัสผ่านต้องมีอย่างน้อย 8 ตัว ประกอบด้วย A-Z, a-z, 0-9 และอักขระพิเศษ`);
+        setLoading(false);
+        return;
+      }
+
+      if (password.new !== password.confirm) {
+        alert('รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน');
+        setLoading(false);
+        return;
+      }
+
+      const {error: updateError} = await supabase.auth.updateUser({
+        password: password.new
+      });
+
+      if (updateError) throw updateError;
+
+      alert('อัปเดตรหัสผ่านสำเร็จ!');
+
+      setPassword({
+        current:'',
+        new:'',
+        confirm:''
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'ไม่สามารถเปลี่ยนรหัสผ่านได้';
+      alert('เกิดข้อผิดพลาด: ' + errorMessage);
+      console.error('Password update error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword({ ...password, [e.target.name]: e.target.value });
-  };
-
-
-  const savePassword = () => {
-    console.log('Updating password:', password);
   };
 
   if (loading) {
