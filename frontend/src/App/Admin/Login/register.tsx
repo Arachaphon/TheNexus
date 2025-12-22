@@ -64,7 +64,7 @@ const RegisterPage: React.FC = () => {
     if (!password) {
         newErrors.password = "จำเป็นต้องกรอกข้อมูลเหล่านี้";
     } else {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#._-])[A-Za-z\d@$!%*?&#._-]{8,}$/;
         if (!passwordRegex.test(password)) {
             newErrors.password = `รหัสผ่านต้องมีอย่างน้อย 8 ตัว ประกอบด้วย A-Z, a-z, 0-9 และอักขระพิเศษ`;
         }
