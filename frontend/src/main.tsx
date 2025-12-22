@@ -16,6 +16,7 @@ import Adddormitory from './App/Admin/Homemain/adddormitory.tsx';
 import UtilityCalculation from './App/Admin/Homemain/utilitycalculation.tsx'; 
 import ProfileSettings from './App/Admin/Homemain/profilesettings.tsx';
 import BankAccountConfig from './App/Admin/Homemain/bankaccountconfig.tsx';
+import FloorSetup from './App/Admin/Homemain/floorsetup.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -31,6 +32,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/homemain/utilitycalculation" element={<UtilityCalculation />} />
         <Route path="/homemain/profilesettings" element={<ProfileSettings />} />
         <Route path="/homemain/bankaccountconfig" element={<BankAccountConfig />} />
+        <Route path="/homemain/floorsetup" element={<FloorSetup />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

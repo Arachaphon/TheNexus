@@ -253,7 +253,12 @@ const BankAccountConfig = () => {
         </div>
 
         {/* --- Next Button --- */}
-        <div className="w-full max-w-5xl mt-10 flex justify-end">
+        <div className="w-full max-w-5xl flex justify-between mt-8">
+          <a href="/homemain/utilitycalculation">
+            <button className="px-6 py-2.5 text-gray-500 hover:text-gray-700 font-medium text-sm transition-colors flex items-center gap-2">
+              กลับ
+            </button>
+          </a>
           <button className={`px-10 py-2.5 rounded-lg text-sm font-bold shadow-sm transition-all ${bankAccounts.length > 0 ? 'bg-[#7d7a75] hover:bg-[#6b6863] text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>
             ถัดไป
           </button>
